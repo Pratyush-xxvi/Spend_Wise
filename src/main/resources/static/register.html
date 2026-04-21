@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register — SpendWise</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="auth-body">
+  <div class="auth-container">
+    <h1>Create Account</h1>
+    <div class="form" style="margin-top:0;">
+      <div class="form-control">
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Choose a username">
+      </div>
+      <div class="form-control">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Enter your email">
+      </div>
+      <div class="form-control">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Create a password">
+      </div>
+      <div class="form-control">
+        <label for="confirm-password">Confirm Password</label>
+        <input type="password" id="confirm-password" placeholder="Confirm your password">
+      </div>
+      <button type="button" class="btn" id="register-btn">Create Account</button>
+    </div>
+    <a href="login.html" class="auth-link">Already have an account? Login →</a>
+  </div>
+
+  <script>
+    document.getElementById('register-btn').addEventListener('click', async () => {
+      const username = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const confirmPassword = document.getElementById('confirm-password').value.trim();
+
+      if (!username || !email || !password || !confirmPassword) { alert('Please fill in all fields.'); return; }
+      if (password !== confirmPassword) { alert('Passwords do not match.'); return; }
+
+      try {
+        const res = await fetch("/ExpTrack/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, email, password })
+        });
+        if (!res.ok) { const err = await res.text(); alert("Error: " + err); return; }
+        const data = await res.json();
+        alert("Registration successful for: " + data.username);
+        window.location.href = 'login.html';
+      } catch (err) {
+        alert("Request failed: " + err.message);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+databases:
+  - name: spendwise-db
+    plan: free
+    databaseName: spendwise
+    user: spendwise_user
+
+services:
+  - type: web
+    name: spendwise-backend
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /ExpTrack/login
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: spendwise-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: spendwise-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: spendwise-db
+          property: password
+      - key: PORT
+        value: 8080

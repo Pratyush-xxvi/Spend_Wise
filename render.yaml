@@ -12,10 +12,18 @@ services:
     dockerfilePath: ./Dockerfile
     healthCheckPath: /ExpTrack/login
     envVars:
-      - key: SPRING_DATASOURCE_URL
+      - key: DB_HOST
         fromDatabase:
           name: spendwise-db
-          property: connectionString
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: spendwise-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: spendwise-db
+          property: database
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: spendwise-db
@@ -25,4 +33,4 @@ services:
           name: spendwise-db
           property: password
       - key: PORT
-        value: 8080
+        value: "8080"
